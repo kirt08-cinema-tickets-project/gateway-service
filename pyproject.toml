@@ -12,7 +12,8 @@ dependencies = [
     "phonenumbers (>=9.0.22,<10.0.0)",
     "email-validator (>=2.3.0,<3.0.0)",
     "ruff (>=0.14.14,<0.15.0)",
-    "kirt08-contracts (>=0.1.3,<0.2.0)",
+    "kirt08-contracts (>=0.1.4,<0.2.0)",
+    "kirt08-exceptions (>=0.1.0,<0.2.0)",
 ]
 
 

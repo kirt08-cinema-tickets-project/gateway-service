@@ -45,5 +45,7 @@ class SendOtpRequest(BaseModel):
                 raise ValueError("Incorrect Phone Number")
         return self
 
+class VerifyOtpRequest(SendOtpRequest):
+    code: str = Field(min_length=6, max_length=6, pattern=r'^\d+$') # string contains only digits
 
 # Response

@@ -313,20 +313,35 @@ all = ["flake8 (>=7.1.1)", "mypy (>=1.11.2)", "pytest (>=8.3.2)", "ruff (>=0.6.2
 
 [[package]]
 name = "kirt08-contracts"
-version = "0.1.3"
+version = "0.1.4"
 description = ""
 optional = false
 python-versions = "<3.13,>=3.12"
 groups = ["main"]
 files = [
-    {file = "kirt08_contracts-0.1.3-py3-none-any.whl", hash = "sha256:99cd3bc2831851da4cd0e6fb37efdc08e8f2b6a91e5ad4f031608a2f867978d4"},
-    {file = "kirt08_contracts-0.1.3.tar.gz", hash = "sha256:1c1cef0d3e1d2b732bc4ee106ca97d8d1d22bb388e12da5692e0a100c2bb9433"},
+    {file = "kirt08_contracts-0.1.4-py3-none-any.whl", hash = "sha256:16e8e698a5200c8414a501279994e667f27b95033922ccd9cd798382768a0c36"},
+    {file = "kirt08_contracts-0.1.4.tar.gz", hash = "sha256:a9ce5012cbe872c0c0473e33394a1956bdfa32443176b4853010687fd440ddc1"},
 ]
 
 [package.dependencies]
 grpcio = ">=1.76.0,<2.0.0"
 grpcio-tools = ">=1.76.0,<2.0.0"
 protobuf = ">=6.33.4,<7.0.0"
+
+[[package]]
+name = "kirt08-exceptions"
+version = "0.1.1"
+description = ""
+optional = false
+python-versions = ">=3.12"
+groups = ["main"]
+files = [
+    {file = "kirt08_exceptions-0.1.1-py3-none-any.whl", hash = "sha256:51a8eb1817e67200c3a6aaddc5e50c830ffe12328e87bf19213c6c460e64a53f"},
+    {file = "kirt08_exceptions-0.1.1.tar.gz", hash = "sha256:51431559b3732cc70fe91fc1c32d62c79cf69b8688d80e06a7b51af84beda52a"},
+]
+
+[package.dependencies]
+fastapi = ">=0.128.0,<0.129.0"
 
 [[package]]
 name = "phonenumbers"
@@ -698,4 +713,4 @@ standard = ["colorama (>=0.4) ; sys_platform == \"win32\"", "httptools (>=0.6.3)
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12, <3.13"
-content-hash = "0ac80420756aa3310b06c464dad1b95d0d3209505fb4b59b5c8a522bfc27ab4f"
+content-hash = "cf4ecdc6fc94264a4e0045b7d0f704c64fac7a31cac0bbc2e3b4178112c8a1a4"

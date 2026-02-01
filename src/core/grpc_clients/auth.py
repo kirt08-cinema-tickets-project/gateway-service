@@ -1,4 +1,3 @@
-import logging
 import grpc
 
 from kirt08_contracts import auth_pb2, auth_pb2_grpc
@@ -14,4 +13,13 @@ class AuthClient:
             type = type_,
         )
         response = await self.stub.SendOtp(request)
+        return response
+    
+    async def verify_otp(self, identifier: str, type_: str, code: str):
+        request = auth_pb2.VerifyOtpRequest(
+            identifier = identifier,
+            type = type_,
+            code = code,
+        )
+        response = await self.stub.VerifyOtp(request)
         return response
