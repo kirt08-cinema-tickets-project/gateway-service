@@ -313,14 +313,14 @@ all = ["flake8 (>=7.1.1)", "mypy (>=1.11.2)", "pytest (>=8.3.2)", "ruff (>=0.6.2
 
 [[package]]
 name = "kirt08-contracts"
-version = "0.1.4"
+version = "0.1.5"
 description = ""
 optional = false
 python-versions = "<3.13,>=3.12"
 groups = ["main"]
 files = [
-    {file = "kirt08_contracts-0.1.4-py3-none-any.whl", hash = "sha256:16e8e698a5200c8414a501279994e667f27b95033922ccd9cd798382768a0c36"},
-    {file = "kirt08_contracts-0.1.4.tar.gz", hash = "sha256:a9ce5012cbe872c0c0473e33394a1956bdfa32443176b4853010687fd440ddc1"},
+    {file = "kirt08_contracts-0.1.5-py3-none-any.whl", hash = "sha256:e1819f86dc89f162d2a6af5c6b90130ee623137e3fff00aecd89753af64b2862"},
+    {file = "kirt08_contracts-0.1.5.tar.gz", hash = "sha256:a151f5d87b194b49b1c6bd81243e0f2d1d46aa1b572c9137035ce0128328731c"},
 ]
 
 [package.dependencies]
@@ -342,6 +342,18 @@ files = [
 
 [package.dependencies]
 fastapi = ">=0.128.0,<0.129.0"
+
+[[package]]
+name = "kirt08-tokens"
+version = "0.1.2"
+description = "This lib will help you generate token for your projects."
+optional = false
+python-versions = ">=3.12"
+groups = ["main"]
+files = [
+    {file = "kirt08_tokens-0.1.2-py3-none-any.whl", hash = "sha256:5569511aec85e9062ff66e9938b1e90e4f889a7ebf24649edb7262459efe2f46"},
+    {file = "kirt08_tokens-0.1.2.tar.gz", hash = "sha256:2293358b8429e7920210899596d0af8c306c664f19300ebbb68fbb1ae9c234b8"},
+]
 
 [[package]]
 name = "phonenumbers"
@@ -713,4 +725,4 @@ standard = ["colorama (>=0.4) ; sys_platform == \"win32\"", "httptools (>=0.6.3)
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12, <3.13"
-content-hash = "cf4ecdc6fc94264a4e0045b7d0f704c64fac7a31cac0bbc2e3b4178112c8a1a4"
+content-hash = "9238ced2609e8b1c7ea59c29d12a9e85fa6463eb7dad7cc0896a7a0dfcdba573"

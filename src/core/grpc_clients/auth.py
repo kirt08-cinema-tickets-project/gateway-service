@@ -23,3 +23,10 @@ class AuthClient:
         )
         response = await self.stub.VerifyOtp(request)
         return response
+    
+    async def refresh(self, refresh_token : str):
+        request = auth_pb2.RefreshRequest(
+            refresh_token = refresh_token
+        )
+        response = await self.stub.Refresh(request)
+        return response
