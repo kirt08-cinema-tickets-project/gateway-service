@@ -1,6 +1,6 @@
 import grpc
 
-from kirt08_contracts import auth_pb2, auth_pb2_grpc
+from kirt08_contracts.auth import auth_pb2, auth_pb2_grpc
 
 class AuthClient:
     def __init__(self, host : str):

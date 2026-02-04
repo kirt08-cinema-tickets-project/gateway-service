@@ -2,19 +2,17 @@ from typing import Annotated
 import grpc
 
 from fastapi import APIRouter, Depends, HTTPException, Cookie, Response
-from kirt08_contracts import auth_pb2
+from kirt08_contracts.auth import auth_pb2
 from kirt08_exceptions.exceptions import GrpcToHttp
 
 from src.core.config import settings
-from src.core.grpc_clients import AuthClient
 
+from src.apps.auth.utils import Roles
+from src.apps.auth.grpc_clients import auth_client
+from src.apps.auth.service import authorized, permission_guard
 from src.apps.auth.schemas import SendOtpRequest, VerifyOtpRequest
-from src.apps.auth.service import authorized
 
 router = APIRouter(prefix="/otp")
-
-auth_url = str(settings.auth.host) + ":" + str(settings.auth.port)
-auth_client = AuthClient(auth_url)
 
 
 @router.post("/send", 
@@ -92,3 +90,9 @@ async def logout(response : Response) -> dict[str, bool]:
 @router.post("/test")
 async def test_func(user_id : Annotated[str, Depends(authorized)]):
     return user_id
+
+@router.post("/test-getaccount", dependencies=[Depends(permission_guard(Roles.ADMIN))])
+async def test_get_account():
+    # grpc_response = await account_client.get_account(user_id)
+    return {"response": "ok"}
+    
