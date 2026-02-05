@@ -1,24 +1,12 @@
 from typing_extensions import Self
 
-from pydantic import BaseModel, model_validator, EmailStr, Field
-from pydantic_extra_types.phone_numbers import PhoneNumber
+from pydantic import BaseModel, model_validator, Field
 
 from src.apps.auth.utils import Type_Enum
-
-
-#Utils
-class Email_Validate_Schema(BaseModel):
-    email: EmailStr
-
-
-class RU_BY_Phones_Numbers_Schema(PhoneNumber):
-    default_region_code = None
-    supported_regions = ["RU", "BY"]
-    phone_format = "E164"
-
-
-class Phone_Validation_Schema(BaseModel):
-    phone: RU_BY_Phones_Numbers_Schema
+from src.apps.shared.schemas import (
+    Email_Validate_Schema,
+    Phone_Validation_Schema,
+)
 
 
 # Request
