@@ -1,21 +1,28 @@
 import grpc
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Cookie, Response
+from fastapi import APIRouter, Body, HTTPException, Cookie, Response
 from kirt08_contracts.auth import auth_pb2
 from kirt08_exceptions.exceptions import GrpcToHttp
 
 from src.core.config import settings
 
-from src.apps.auth.utils import Roles
 from src.apps.grpc_clients import auth_client
-from src.apps.shared.service import authorized, permission_guard
-from src.apps.auth.schemas import SendOtpRequest, VerifyOtpRequest
+from src.apps.auth.schemas import (
+    SendOtpRequest,
+    VerifyOtpRequest,
+    TelegramVarifyRequest,
+)
 
-router = APIRouter(prefix="/otp")
+from src.apps.auth.service import (
+    service_get_telegram_query,
+)
 
 
-@router.post("/send", 
+router = APIRouter()
+
+
+@router.post("/otp/send", 
     summary="Send otp code", 
     description="Sends a verification code to the user phone number or email"
 )
@@ -30,7 +37,7 @@ async def auth_send_otp(data : SendOtpRequest) -> dict[str, bool]:
             raise HTTPException(status_code=http_status, detail=e.details())
     
 
-@router.post("/verify",
+@router.post("/otp/verify",
     summary="Verify otp code",
     description="Verifies the code sent to the user phone number or email and returns a access token",
 )
@@ -87,11 +94,28 @@ async def logout(response : Response) -> dict[str, bool]:
     )
     return {"ok": True}
 
-@router.post("/test")
-async def test_func(user_id : Annotated[str, Depends(authorized)]):
-    return user_id
+# @router.post("/test")
+# async def test_func(user_id : Annotated[str, Depends(authorized)]):
+#     return user_id
 
-@router.post("/test-getaccount", dependencies=[Depends(permission_guard(Roles.ADMIN))])
-async def test_get_account():
-    # grpc_response = await account_client.get_account(user_id)
-    return {"response": "ok"}
+# @router.post("/test-getaccount", dependencies=[Depends(permission_guard(Roles.ADMIN))])
+# async def test_get_account():
+#     # grpc_response = await account_client.get_account(user_id)
+#     return {"response": "ok"}
+
+@router.get("/telegram",
+            summary = "Start Telegram login",
+            description = "Give the link to start Telegram authorization"
+)
+async def telegram_init():
+    grpc_response = await auth_client.telegram_init()
+    return {"url": grpc_response.url}
+
+@router.post("/telegram/verify",
+            summary="Verify Telegram login",
+            description="Check the login using the query fragment from Telegram and return the final URL"
+)
+async def telegram_verify(data : TelegramVarifyRequest):
+    query = await service_get_telegram_query(data.fragment)
+    grpc_response = await auth_client.telegram_verify(query)
+    return grpc_response.url

@@ -36,4 +36,7 @@ class SendOtpRequest(BaseModel):
 class VerifyOtpRequest(SendOtpRequest):
     code: str = Field(min_length=6, max_length=6, pattern=r'^\d+$') # string contains only digits
 
+class TelegramVarifyRequest(BaseModel):
+    fragment: str = Field(examples=["eyJpZCI6MTA4NjkxMjAwNSwiZmlyc3RfbmFtZSI6I..."])
+    
 # Response

@@ -1,4 +1,5 @@
 import grpc
+from google.protobuf.empty_pb2 import Empty
 
 from kirt08_contracts.auth import auth_pb2, auth_pb2_grpc
 
@@ -29,4 +30,13 @@ class AuthClient:
             refresh_token = refresh_token
         )
         response = await self.stub.Refresh(request)
+        return response
+    
+    async def telegram_init(self):
+        response = await self.stub.TelegramInit(Empty())
+        return response
+    
+    async def telegram_verify(self, query: dict[str, str]):
+        request = auth_pb2.TelegrmaVerifyRequest(query = query)
+        response = await self.stub.TelegramVerify(request)
         return response
