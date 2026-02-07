@@ -115,7 +115,25 @@ async def telegram_init():
             summary="Verify Telegram login",
             description="Check the login using the query fragment from Telegram and return the final URL"
 )
-async def telegram_verify(data : TelegramVarifyRequest):
-    query = await service_get_telegram_query(data.fragment)
-    grpc_response = await auth_client.telegram_verify(query)
-    return grpc_response.url
+async def telegram_verify(data : TelegramVarifyRequest, response : Response):
+    try:
+        query = await service_get_telegram_query(data.fragment)
+        grpc_response = await auth_client.telegram_verify(query)
+        field = grpc_response.WhichOneof("result")
+        if field == "url":
+            return grpc_response.url
+        else:
+            response.set_cookie(
+            key = "refreshToken",
+            value = grpc_response.tokens.refresh_token,
+            httponly = True,
+            secure = True if settings.mode.mode == "production" else False,
+            domain = settings.cookies.domain if settings.mode.mode == "production" else None,
+            samesite = 'lax',
+            max_age=24 * 60 * 60 * 1000, # 1 day
+            expires = 24 * 60 * 60, # 1 day
+        )
+        return {"access_token": grpc_response.tokens.access_token}
+    except grpc.aio.AioRpcError as e:
+        http_status = GrpcToHttp[e.code().name].value
+        raise HTTPException(status_code=http_status, detail=e.details())
