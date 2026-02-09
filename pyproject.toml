@@ -14,7 +14,7 @@ dependencies = [
     "ruff (>=0.14.14,<0.15.0)",
     "kirt08-exceptions (>=0.1.0,<0.2.0)",
     "kirt08-tokens (>=0.1.2,<0.2.0)",
-    "kirt08-contracts (>=0.1.9,<0.2.0)",
+    "kirt08-contracts (>=0.1.10,<0.2.0)",
 ]
 
 

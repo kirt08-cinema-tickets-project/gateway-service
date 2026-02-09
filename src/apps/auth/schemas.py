@@ -39,4 +39,7 @@ class VerifyOtpRequest(SendOtpRequest):
 class TelegramVarifyRequest(BaseModel):
     fragment: str = Field(examples=["eyJpZCI6MTA4NjkxMjAwNSwiZmlyc3RfbmFtZSI6I..."])
     
+class TelegramConsumeRequest(BaseModel):
+    session_id: str = Field(examples=["db54451ee2f08d3706077bc4e616852b"])
+    
 # Response

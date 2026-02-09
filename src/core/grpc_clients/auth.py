@@ -40,3 +40,8 @@ class AuthClient:
         request = auth_pb2.TelegrmaVerifyRequest(query = query)
         response = await self.stub.TelegramVerify(request)
         return response
+
+    async def telegram_consume(self, session_id: str):
+        request = auth_pb2.TelegramConsumeRequest(session_id = session_id)
+        response = await self.stub.TelegramConsume(request)
+        return response
