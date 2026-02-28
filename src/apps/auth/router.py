@@ -1,9 +1,7 @@
-import grpc
 from typing import Annotated
 
-from fastapi import APIRouter, Body, HTTPException, Cookie, Response
+from fastapi import APIRouter, Body, Cookie, Response
 from kirt08_contracts.auth import auth_pb2
-from kirt08_exceptions.exceptions import GrpcToHttp
 
 from src.core.config import settings
 
@@ -28,14 +26,10 @@ router = APIRouter()
     description="Sends a verification code to the user phone number or email"
 )
 async def auth_send_otp(data : SendOtpRequest) -> dict[str, bool]:
-    try:
-        response = await auth_client.send_otp(data.identifier, data.type_identifier)
-        return {
-            "ok": response.ok,
-        }
-    except grpc.aio.AioRpcError as e:
-            http_status = GrpcToHttp[e.code().name].value
-            raise HTTPException(status_code=http_status, detail=e.details())
+    response = await auth_client.send_otp(data.identifier, data.type_identifier)
+    return {
+        "ok": response.ok,
+    }
     
 
 @router.post("/otp/verify",
@@ -43,22 +37,18 @@ async def auth_send_otp(data : SendOtpRequest) -> dict[str, bool]:
     description="Verifies the code sent to the user phone number or email and returns a access token",
 )
 async def auth_verify_otp(data : VerifyOtpRequest, response : Response) -> dict[str, str]:
-    try:
-        grpc_response : auth_pb2.VerifyOtpResponse  = await auth_client.verify_otp(data.identifier, data.type_identifier, data.code)
-        response.set_cookie(
-            key = "refreshToken",
-            value = grpc_response.refresh_token,
-            httponly = True,
-            secure = True if settings.mode.mode == "production" else False,
-            domain = settings.cookies.domain if settings.mode.mode == "production" else None,
-            samesite = 'lax',
-            max_age = 24 * 60 * 60, # 1 day
-            expires = 24 * 60 * 60, # 1 day
-        )
-        return {"access_token": grpc_response.access_token}
-    except grpc.aio.AioRpcError as e:
-        http_status = GrpcToHttp[e.code().name].value
-        raise HTTPException(status_code=http_status, detail=e.details())
+    grpc_response : auth_pb2.VerifyOtpResponse  = await auth_client.verify_otp(data.identifier, data.type_identifier, data.code)
+    response.set_cookie(
+        key = "refreshToken",
+        value = grpc_response.refresh_token,
+        httponly = True,
+        secure = True if settings.mode.mode == "production" else False,
+        domain = settings.cookies.domain if settings.mode.mode == "production" else None,
+        samesite = 'lax',
+        max_age = 24 * 60 * 60, # 1 day
+        expires = 24 * 60 * 60, # 1 day
+    )
+    return {"access_token": grpc_response.access_token}
 
 
 @router.post("/refresh",
@@ -66,22 +56,18 @@ async def auth_verify_otp(data : VerifyOtpRequest, response : Response) -> dict[
     description="Renews access token using refresh token from cookies",
 )
 async def refresh(response : Response, refreshToken : Annotated[str | None, Cookie()] = None) -> dict[str, str]:
-    try:
-        grpc_response : auth_pb2.RefreshResponse = await auth_client.refresh(refreshToken)
-        response.set_cookie(
-            key = "refreshToken",
-            value = grpc_response.refresh_token,
-            httponly = True,
-            secure = True if settings.mode.mode == "production" else False,
-            domain = settings.cookies.domain if settings.mode.mode == "production" else None,
-            samesite = 'lax',
-            max_age=24 * 60 * 60 * 1000, # 1 day
-            expires = 24 * 60 * 60, # 1 day
-        )
-        return {"access_token": grpc_response.access_token}
-    except grpc.aio.AioRpcError as e:
-         http_status = GrpcToHttp[e.code().name].value
-         raise HTTPException(status_code=http_status, detail=e.details())
+    grpc_response : auth_pb2.RefreshResponse = await auth_client.refresh(refreshToken)
+    response.set_cookie(
+        key = "refreshToken",
+        value = grpc_response.refresh_token,
+        httponly = True,
+        secure = True if settings.mode.mode == "production" else False,
+        domain = settings.cookies.domain if settings.mode.mode == "production" else None,
+        samesite = 'lax',
+        max_age=24 * 60 * 60 * 1000, # 1 day
+        expires = 24 * 60 * 60, # 1 day
+    )
+    return {"access_token": grpc_response.access_token}
 
 
 @router.post("/logout",
@@ -109,28 +95,39 @@ async def logout(response : Response) -> dict[str, bool]:
             description = "Give the link to start Telegram authorization"
 )
 async def telegram_init():
-    try:
-        grpc_response = await auth_client.telegram_init()
-        return {"url": grpc_response.url}
-    except grpc.aio.AioRpcError as e:
-        http_status = GrpcToHttp[e.code().name].value
-        raise HTTPException(status_code=http_status, detail=e.details())
+    grpc_response = await auth_client.telegram_init()
+    return {"url": grpc_response.url}
 
 @router.post("/telegram/verify",
             summary="Verify Telegram login",
             description="Check the login using the query fragment from Telegram and return the final URL"
 )
 async def telegram_verify(data : TelegramVarifyRequest, response : Response) -> dict[str, str] | str:
-    try:
-        query = await service_get_telegram_query(data.fragment)
-        grpc_response = await auth_client.telegram_verify(query)
-        field = grpc_response.WhichOneof("result")
-        if field == "url":
-            return grpc_response.url
-        else:
-            response.set_cookie(
+    query = await service_get_telegram_query(data.fragment)
+    grpc_response = await auth_client.telegram_verify(query)
+    field = grpc_response.WhichOneof("result")
+    if field == "url":
+        return grpc_response.url
+    else:
+        response.set_cookie(
+        key = "refreshToken",
+        value = grpc_response.tokens.refresh_token,
+        httponly = True,
+        secure = True if settings.mode.mode == "production" else False,
+        domain = settings.cookies.domain if settings.mode.mode == "production" else None,
+        samesite = 'lax',
+        max_age=24 * 60 * 60 * 1000, # 1 day
+        expires = 24 * 60 * 60, # 1 day
+    )
+    return {"access_token": grpc_response.tokens.access_token}
+    
+    
+@router.post("/telegram/finalize")
+async def telegram_finalize(data: TelegramConsumeRequest, response : Response) -> str:
+    grpc_response = await auth_client.telegram_consume(data.session_id)
+    response.set_cookie(
             key = "refreshToken",
-            value = grpc_response.tokens.refresh_token,
+            value = grpc_response.refresh_token,
             httponly = True,
             secure = True if settings.mode.mode == "production" else False,
             domain = settings.cookies.domain if settings.mode.mode == "production" else None,
@@ -138,26 +135,5 @@ async def telegram_verify(data : TelegramVarifyRequest, response : Response) -> 
             max_age=24 * 60 * 60 * 1000, # 1 day
             expires = 24 * 60 * 60, # 1 day
         )
-        return {"access_token": grpc_response.tokens.access_token}
-    except grpc.aio.AioRpcError as e:
-        http_status = GrpcToHttp[e.code().name].value
-        raise HTTPException(status_code=http_status, detail=e.details())
+    return {"url": grpc_response.access_token}
     
-@router.post("/telegram/finalize")
-async def telegram_finalize(data: TelegramConsumeRequest, response : Response) -> str:
-    try:
-        grpc_response = await auth_client.telegram_consume(data.session_id)
-        response.set_cookie(
-                key = "refreshToken",
-                value = grpc_response.refresh_token,
-                httponly = True,
-                secure = True if settings.mode.mode == "production" else False,
-                domain = settings.cookies.domain if settings.mode.mode == "production" else None,
-                samesite = 'lax',
-                max_age=24 * 60 * 60 * 1000, # 1 day
-                expires = 24 * 60 * 60, # 1 day
-            )
-        return {"url": grpc_response.access_token}
-    except grpc.aio.AioRpcError as e:
-        http_status = GrpcToHttp[e.code().name].value
-        raise HTTPException(status_code=http_status, detail=e.details())

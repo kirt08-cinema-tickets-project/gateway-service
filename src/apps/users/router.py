@@ -1,6 +1,4 @@
-import grpc
 from typing import Annotated
-from kirt08_exceptions.exceptions import GrpcToHttp
 
 from fastapi import APIRouter, Depends, HTTPException
 
@@ -17,20 +15,17 @@ router = APIRouter()
             summary="Get inforamation about current logined user",
             description="Get inforamation about current logined user")
 async def get_me(payload: Annotated[dict[str, str], Depends(authorized)]) -> GetMeResponse:
-    try:
-        user_id = payload.get("payload")
-        grpc_response = await users_client.get_me(user_id)
-        user = GetMeResponse(
-            id = grpc_response.user.id,
-            name = grpc_response.user.name if grpc_response.user.name != "" else None, 
-            avatar = grpc_response.user.avatar if grpc_response.user.avatar != "" else None,
-            phone = grpc_response.user.phone if grpc_response.user.phone != "" else None,
-            email = grpc_response.user.email if grpc_response.user.email != "" else None 
-        )
-        return user
-    except grpc.aio.AioRpcError as e:
-        http_status = GrpcToHttp[e.code().name].value
-        raise HTTPException(status_code=http_status, detail=e.details())
+    user_id = payload.get("payload")
+    grpc_response = await users_client.get_me(user_id)
+    user = GetMeResponse(
+        id = grpc_response.user.id,
+        name = grpc_response.user.name if grpc_response.user.name != "" else None, 
+        avatar = grpc_response.user.avatar if grpc_response.user.avatar != "" else None,
+        phone = grpc_response.user.phone if grpc_response.user.phone != "" else None,
+        email = grpc_response.user.email if grpc_response.user.email != "" else None 
+    )
+    return user
+
 
 @router.patch("/me", 
               summary="Let you change user",
@@ -40,7 +35,7 @@ async def patch_me(
     payload: Annotated[dict[str, str], Depends(authorized)]
 ) -> dict[str, bool]:
     user_id = payload.get("payload")
-    
+
     result = True
     if data.name is not None:
         grpc_response = await users_client.patch_me(
