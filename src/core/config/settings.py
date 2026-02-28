@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from src.core.config.authConfig import AuthConfig
+from src.core.config.usersConfig import UsersConfig
 from src.core.config.loggerConfig import LoggerConfig
 from src.core.config.cookiesCongig import CookiesConfig
 from src.core.config.passportConfig import PassportConfig
@@ -22,6 +23,7 @@ class Settings(BaseSettings):
     mode : ModeConfig = ModeConfig()
     logger : LoggerConfig = LoggerConfig() 
     auth : AuthConfig = AuthConfig()
+    users : UsersConfig = UsersConfig()
     cookies : CookiesConfig = CookiesConfig()
     passport : PassportConfig = PassportConfig()
     
