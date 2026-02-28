@@ -8,12 +8,14 @@ from src.apps.grpc_clients import users_client
 
 from src.apps.shared.service import authorized
 
-from src.apps.users.shemas import GetMeResponse
+from src.apps.users.shemas import GetMeResponse, PatchMeRequest
 
 
 router = APIRouter()
 
-@router.get("/me")
+@router.get("/me", 
+            summary="Get inforamation about current logined user",
+            description="Get inforamation about current logined user")
 async def get_me(payload: Annotated[dict[str, str], Depends(authorized)]) -> GetMeResponse:
     try:
         user_id = payload.get("payload")
@@ -29,3 +31,23 @@ async def get_me(payload: Annotated[dict[str, str], Depends(authorized)]) -> Get
     except grpc.aio.AioRpcError as e:
         http_status = GrpcToHttp[e.code().name].value
         raise HTTPException(status_code=http_status, detail=e.details())
+
+@router.patch("/me", 
+              summary="Let you change user",
+              description="Let you change your user's name, in future also avatar")
+async def patch_me(
+    data: PatchMeRequest,
+    payload: Annotated[dict[str, str], Depends(authorized)]
+) -> dict[str, bool]:
+    user_id = payload.get("payload")
+    
+    result = True
+    if data.name is not None:
+        grpc_response = await users_client.patch_me(
+            id = user_id,
+            name = data.name
+        )
+        result = grpc_response.ok
+    return {"message": result}
+
+

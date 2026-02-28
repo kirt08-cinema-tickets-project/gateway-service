@@ -10,3 +10,10 @@ class GetMeResponse(BaseModel):
     avatar: Optional[str] = Field(default=None, examples=["kirt08.com/avatar/bshfbshefb2143214njsd"])
     phone: Optional[RU_BY_Phones_Numbers_Schema] = Field(default=None, examples=["+375446768905"])
     email: Optional[EmailStr] = Field(default=None, examples=["test@gmail.com"])
+
+class UserAccount(BaseModel):
+    name: Optional[str] = Field(default=None, examples=["kirt"])
+    avatar: Optional[str] = Field(default=None, examples=["kirt08.com/avatar/bshfbshefb2143214njsd"], deprecated=True)
+
+class PatchMeRequest(UserAccount):
+    ...
