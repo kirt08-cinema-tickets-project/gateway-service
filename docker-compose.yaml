@@ -1,0 +1,23 @@
+services:
+  gateway-service:
+    container_name: gateway-service
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env.production.local
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/ping"]
+      interval: 30s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+    networks:
+      - kirt08
+
+networks:
+  kirt08:
+    external: true
