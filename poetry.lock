@@ -369,6 +369,23 @@ files = [
 ]
 
 [[package]]
+name = "prometheus-client"
+version = "0.24.1"
+description = "Python client for the Prometheus monitoring system."
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "prometheus_client-0.24.1-py3-none-any.whl", hash = "sha256:150db128af71a5c2482b36e588fc8a6b95e498750da4b17065947c16070f4055"},
+    {file = "prometheus_client-0.24.1.tar.gz", hash = "sha256:7e0ced7fbbd40f7b84962d5d2ab6f17ef88a72504dcf7c0b40737b43b2a461f9"},
+]
+
+[package.extras]
+aiohttp = ["aiohttp"]
+django = ["django"]
+twisted = ["twisted"]
+
+[[package]]
 name = "protobuf"
 version = "6.33.5"
 description = ""
@@ -726,4 +743,4 @@ standard = ["colorama (>=0.4) ; sys_platform == \"win32\"", "httptools (>=0.6.3)
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12, <3.13"
-content-hash = "a626090b6dda3af563b81bcfbf5dfe47a11dd5d9f8a147c73dae27e47d4740b9"
+content-hash = "66c3f1d72759481f32a8344037a5d8b391272be17f2be1427915cca9192dbb3d"
