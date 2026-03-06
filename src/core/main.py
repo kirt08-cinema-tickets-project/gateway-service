@@ -13,11 +13,13 @@ from fastapi import (
 from fastapi.responses import JSONResponse
 
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 
 from src.apps import router as apps_router
 
 from src.core.service import service_ping
 from src.core.schemas import HealthResponse
+from src.core.tracing import Tracing
 from src.core.prometheus_metrics import (
     REQUEST_COUNT,
     REQUEST_DURATION,
@@ -26,6 +28,10 @@ from src.core.prometheus_metrics import (
 
 
 app = FastAPI()
+tracer = Tracing()
+tracer.startup()
+FastAPIInstrumentor.instrument_app(app)
+
 app.include_router(apps_router)
 
 @app.exception_handler(grpc.aio.AioRpcError)
@@ -45,26 +51,30 @@ async def prometheus_metrics(request: Request, call_next):
     REQUEST_IN_FLIGHT.labels(service_name).inc()
 
     start = time.perf_counter()
-    response: Response = await call_next(request)
-    process_time = time.perf_counter() - start
+    try:
+        response: Response = await call_next(request)
+        process_time = time.perf_counter() - start
 
-    status_code = response.status_code
+        status_code = response.status_code
+    except Exception:
+        status_code = 500
+        raise
+    finally:
+        REQUEST_COUNT.labels(
+            service_name,
+            method_name,
+            endpoint_path,
+            status_code
+        ).inc()
 
-    REQUEST_COUNT.labels(
-        service_name,
-        method_name,
-        endpoint_path,
-        status_code
-    ).inc()
+        REQUEST_DURATION.labels(
+            service_name,
+            method_name,
+            endpoint_path,
+            status_code
+        ).observe(process_time)
 
-    REQUEST_DURATION.labels(
-        service_name,
-        method_name,
-        endpoint_path,
-        status_code
-    ).observe(process_time)
-
-    REQUEST_IN_FLIGHT.labels(service_name).dec()
+        REQUEST_IN_FLIGHT.labels(service_name).dec()
 
     return response
 

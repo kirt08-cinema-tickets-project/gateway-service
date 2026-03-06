@@ -16,6 +16,11 @@ dependencies = [
     "kirt08-tokens (>=0.1.2,<0.2.0)",
     "kirt08-contracts (>=0.2.3,<0.3.0)",
     "prometheus-client (>=0.24.1,<0.25.0)",
+    "opentelemetry-api (==1.40.0)",
+    "opentelemetry-sdk (==1.40.0)",
+    "opentelemetry-instrumentation-fastapi (>=0.61b0,<0.62)",
+    "opentelemetry-exporter-otlp (==1.40.0)",
+    "opentelemetry-instrumentation-logging (>=0.61b0,<0.62)",
 ]
 
 
