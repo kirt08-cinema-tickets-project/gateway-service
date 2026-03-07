@@ -1,8 +1,9 @@
+import secrets
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, status
 
-from src.apps.grpc_clients import users_client
+from src.apps.grpc_clients import users_client, media_client
 
 from src.apps.shared.service import authorized
 
@@ -27,10 +28,10 @@ async def get_me(payload: Annotated[dict[str, str], Depends(authorized)]) -> Get
     return user
 
 
-@router.patch("/me", 
+@router.patch("@me/name", 
               summary="Let you change user",
               description="Let you change your user's name, in future also avatar")
-async def patch_me(
+async def patch_me_name(
     data: PatchMeRequest,
     payload: Annotated[dict[str, str], Depends(authorized)]
 ) -> dict[str, bool]:
@@ -46,3 +47,37 @@ async def patch_me(
     return {"message": result}
 
 
+@router.patch("@me/avatar", 
+              summary="Update user avatar",
+              description="Uploads a new avatar for the authenticated user")
+async def patch_me_avatar(
+    file: Annotated[UploadFile, File()],
+    payload: Annotated[dict[str, str], Depends(authorized)]
+):
+    if file.content_type not in ["image/png", "image/jpg", "image/jpeg"]:
+        raise HTTPException(
+            status_code = status.HTTP_409_CONFLICT,
+            detail = "Not supported extension"
+        )
+    
+    file_bytes = await file.read()
+
+    if len(file_bytes) > 10 * 1024 * 1024: # = 10 Mb
+        raise HTTPException(
+            status_code = status.HTTP_409_CONFLICT,
+            detail = "File is too large"
+        )
+    
+    media_grpc_response = await media_client.upload(
+        file_name = secrets.token_hex(16),
+        folder = "users",
+        content_type = file.content_type,
+        data = file_bytes,
+        resize_width = 512,
+        resize_height = 512
+    )
+    users_grpc_response = await users_client.patch_me(id = payload.get("payload"), avatar = media_grpc_response.key)
+    return {
+        "ok": users_grpc_response.ok
+    }
+    

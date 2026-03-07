@@ -14,10 +14,11 @@ class UsersClient:
         response = await self.stub.GetMe(request)
         return response
     
-    async def patch_me(self, id: str, name: str | None = None): # avatar: str | None = None
+    async def patch_me(self, id: str = "", name: str | None = None, avatar: str | None = None): 
         request = users_pb2.PatchUserRequest(
             id = id,
             name = name,
+            avatar = avatar,
         )
         response = await self.stub.PatchUser(request)
         return response

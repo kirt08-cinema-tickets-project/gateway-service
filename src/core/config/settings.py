@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from src.core.config.authConfig import AuthConfig
+from src.core.config.mediaConfig import MediaConfig
 from src.core.config.usersConfig import UsersConfig
 from src.core.config.loggerConfig import LoggerConfig
 from src.core.config.cookiesCongig import CookiesConfig
@@ -26,11 +27,12 @@ class Settings(BaseSettings):
         env_prefix = "GATEWAY_SERVICE__",
         env_nested_delimiter="__",
     )
-    mode : ModeConfig = ModeConfig()
-    logger : LoggerConfig = LoggerConfig() 
-    auth : AuthConfig = AuthConfig()
-    users : UsersConfig = UsersConfig()
-    cookies : CookiesConfig = CookiesConfig()
-    passport : PassportConfig = PassportConfig()
+    mode: ModeConfig = ModeConfig()
+    logger: LoggerConfig = LoggerConfig() 
+    auth: AuthConfig = AuthConfig()
+    users: UsersConfig = UsersConfig()
+    media: MediaConfig = MediaConfig()
+    cookies: CookiesConfig = CookiesConfig()
+    passport: PassportConfig = PassportConfig()
     
 settings = Settings()
