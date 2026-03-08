@@ -60,6 +60,7 @@ async def prometheus_metrics(request: Request, call_next):
         status_code = 500
         raise
     finally:
+        process_time = time.perf_counter() - start
         REQUEST_COUNT.labels(
             service_name,
             method_name,

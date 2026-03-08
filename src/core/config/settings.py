@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from src.core.config.authConfig import AuthConfig
+from src.core.config.movieConfig import MovieConfig
 from src.core.config.mediaConfig import MediaConfig
 from src.core.config.usersConfig import UsersConfig
 from src.core.config.loggerConfig import LoggerConfig
@@ -34,5 +35,6 @@ class Settings(BaseSettings):
     media: MediaConfig = MediaConfig()
     cookies: CookiesConfig = CookiesConfig()
     passport: PassportConfig = PassportConfig()
+    movie: MovieConfig = MovieConfig()
     
 settings = Settings()
