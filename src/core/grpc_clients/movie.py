@@ -15,3 +15,16 @@ class MovieClient:
         )
         response = await self._stub.ListMovies(request)
         return response
+    
+    async def GetMovie(self, id: str | None = None, slug: str | None = None):
+        if not id and not slug:
+            raise ValueError
+        
+        request = movie_pb2.GetMovieRequest()
+        if id:
+            request.id = id
+        else:
+            request.slug = slug
+        
+        response = await self._stub.GetMovie(request)
+        return response
