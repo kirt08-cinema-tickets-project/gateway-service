@@ -3,7 +3,7 @@ from kirt08_contracts.movie import movie_pb2, movie_pb2_grpc
 
 
 class MovieClient:
-    def __init__(self, host: str, ):
+    def __init__(self, host: str):
         self._channel = grpc.aio.insecure_channel(host)
         self._stub = movie_pb2_grpc.MovieServiceStub(self._channel)
 

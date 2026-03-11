@@ -1,14 +1,13 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Query, Depends
+from fastapi import APIRouter, Query
 
-from src.apps.shared.service import authorized
+from google.protobuf.json_format import MessageToDict
 
 from src.apps.grpc_clients import movie_client
 
 from src.apps.movie.shemas import ListMoviesRequest
 
-from google.protobuf.json_format import MessageToDict
 
 router = APIRouter()
 

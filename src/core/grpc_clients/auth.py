@@ -3,6 +3,7 @@ from google.protobuf.empty_pb2 import Empty
 
 from kirt08_contracts.auth import auth_pb2, auth_pb2_grpc
 
+
 class AuthClient:
     def __init__(self, host : str):
         self.channel = grpc.aio.insecure_channel(host)

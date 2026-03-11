@@ -5,6 +5,7 @@ from src.core.grpc_clients import (
     UsersClient,
     MediaClient,
     MovieClient,
+    CategoryClient,
 )
 
 
@@ -20,3 +21,5 @@ media_client = MediaClient(media_url)
 
 movie_url = settings.movie.host + ":" + settings.movie.port
 movie_client = MovieClient(movie_url)
+
+category_client = CategoryClient(movie_url)

@@ -3,7 +3,7 @@ from kirt08_contracts.account import account_pb2, account_pb2_grpc
 
 
 class AccountClient:
-    def __init__(self, host):
+    def __init__(self, host: str):
         self.channel = grpc.aio.insecure_channel(host)
         self.stub = account_pb2_grpc.AccountServiceStub(self.channel)
 
