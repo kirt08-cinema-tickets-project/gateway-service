@@ -6,6 +6,7 @@ from src.core.grpc_clients import (
     MediaClient,
     MovieClient,
     CategoryClient,
+    TheaterClient,
 )
 
 
@@ -23,3 +24,6 @@ movie_url = settings.movie.host + ":" + settings.movie.port
 movie_client = MovieClient(movie_url)
 
 category_client = CategoryClient(movie_url)
+
+theater_url = settings.theater.host + ":" + settings.theater.port
+theater_client = TheaterClient(theater_url)

@@ -505,14 +505,14 @@ type = ["mypy (<1.19) ; platform_python_implementation == \"PyPy\"", "pytest-myp
 
 [[package]]
 name = "kirt08-contracts"
-version = "0.3.1"
+version = "0.3.2"
 description = ""
 optional = false
 python-versions = "<3.13,>=3.12"
 groups = ["main"]
 files = [
-    {file = "kirt08_contracts-0.3.1-py3-none-any.whl", hash = "sha256:bce3b5e5c65a7214187cdd7a2c4f92b246fd1c293362383efecf6012417ba35e"},
-    {file = "kirt08_contracts-0.3.1.tar.gz", hash = "sha256:271ab17b8df7fd45460efc4f7d5bc2999989d708a3eb68501370a9a71cf1dd42"},
+    {file = "kirt08_contracts-0.3.2-py3-none-any.whl", hash = "sha256:ad9e86b481bc11ab13ca253943f09ab62c348530e23062aa2ae8d939e64cb63b"},
+    {file = "kirt08_contracts-0.3.2.tar.gz", hash = "sha256:1b3f6c35d77d75eb2db1a5b4390b406b43a3aa206f89f19e3fac79e81754425c"},
 ]
 
 [package.dependencies]

@@ -10,6 +10,7 @@ from src.core.config.mediaConfig import MediaConfig
 from src.core.config.usersConfig import UsersConfig
 from src.core.config.loggerConfig import LoggerConfig
 from src.core.config.cookiesCongig import CookiesConfig
+from src.core.config.theaterConfig import TheaterConfig
 from src.core.config.passportConfig import PassportConfig
 
 
@@ -36,5 +37,6 @@ class Settings(BaseSettings):
     cookies: CookiesConfig = CookiesConfig()
     passport: PassportConfig = PassportConfig()
     movie: MovieConfig = MovieConfig()
+    theater: TheaterConfig = TheaterConfig() 
     
 settings = Settings()
