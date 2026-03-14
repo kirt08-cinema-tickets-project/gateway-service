@@ -6,6 +6,8 @@ from src.apps.users import router as users_router
 from src.apps.movie import router as movie_router
 from src.apps.categories import router as categories_router
 from src.apps.theaters import router as theaters_router
+from src.apps.halls import router as halls_router
+from src.apps.seats import router as seats_router
 
 router = APIRouter()
 
@@ -15,4 +17,6 @@ router.include_router(users_router)
 router.include_router(movie_router)
 router.include_router(categories_router)
 router.include_router(theaters_router)
+router.include_router(halls_router)
+router.include_router(seats_router)
 

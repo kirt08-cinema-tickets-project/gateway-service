@@ -6,6 +6,8 @@ __all__ = [
     "MovieClient",
     "CategoryClient",
     "TheaterClient",
+    "HallClient",
+    "SeatsClient"
 ]
 
 from src.core.grpc_clients.auth import AuthClient
@@ -15,3 +17,5 @@ from src.core.grpc_clients.media import MediaClient
 from src.core.grpc_clients.movie import MovieClient
 from src.core.grpc_clients.category import CategoryClient
 from src.core.grpc_clients.theaters import TheaterClient 
+from src.core.grpc_clients.halls import HallClient
+from src.core.grpc_clients.seats import SeatsClient

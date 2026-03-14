@@ -7,6 +7,8 @@ from src.core.grpc_clients import (
     MovieClient,
     CategoryClient,
     TheaterClient,
+    HallClient,
+    SeatsClient,
 )
 
 
@@ -27,3 +29,7 @@ category_client = CategoryClient(movie_url)
 
 theater_url = settings.theater.host + ":" + settings.theater.port
 theater_client = TheaterClient(theater_url)
+
+hall_client = HallClient(theater_url)
+
+seats_client = SeatsClient(theater_url)
