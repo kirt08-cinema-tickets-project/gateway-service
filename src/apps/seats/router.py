@@ -21,8 +21,8 @@ async def get_seat_by_id(id: Annotated[str, Path()]) -> GetSeatResponse:
 
 @router.get("/{hall_id}/{screening_id}")
 async def get_list_of_seats(
-    hall_id: Annotated[str, Path(example="d49a85d2-3ca4-4391-a48f-e7ccbb54e09b")],
-    screening_id: Annotated[str, Path(example="123456")]
+    hall_id: Annotated[str, Path(examples=["d49a85d2-3ca4-4391-a48f-e7ccbb54e09b"])],
+    screening_id: Annotated[str, Path(examples=["123456"])]
 ) -> ListSeatsResponse:
     grpc_response = await seats_client.ListSeatsRequest(
         hall_id = hall_id,
