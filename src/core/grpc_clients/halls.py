@@ -1,5 +1,4 @@
 import grpc
-from google.protobuf.empty_pb2 import Empty
 
 from kirt08_contracts.hall import hall_pb2_grpc, hall_pb2
 

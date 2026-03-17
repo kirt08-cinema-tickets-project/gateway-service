@@ -9,6 +9,7 @@ from src.core.grpc_clients import (
     TheaterClient,
     HallClient,
     SeatsClient,
+    ScreeningClient,
 )
 
 
@@ -33,3 +34,6 @@ theater_client = TheaterClient(theater_url)
 hall_client = HallClient(theater_url)
 
 seats_client = SeatsClient(theater_url)
+
+screening_url = settings.screening.host + ":" + settings.screening.port
+screening_client = ScreeningClient(screening_url)

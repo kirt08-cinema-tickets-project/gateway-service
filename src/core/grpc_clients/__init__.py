@@ -7,7 +7,8 @@ __all__ = [
     "CategoryClient",
     "TheaterClient",
     "HallClient",
-    "SeatsClient"
+    "SeatsClient",
+    "ScreeningClient",
 ]
 
 from src.core.grpc_clients.auth import AuthClient
@@ -19,3 +20,4 @@ from src.core.grpc_clients.category import CategoryClient
 from src.core.grpc_clients.theaters import TheaterClient 
 from src.core.grpc_clients.halls import HallClient
 from src.core.grpc_clients.seats import SeatsClient
+from src.core.grpc_clients.screening import ScreeningClient
