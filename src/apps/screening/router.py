@@ -41,7 +41,7 @@ async def get_screening(id: Annotated[str, Path()]):
     return MessageToDict(grpc_response)
 
 
-@router.get("movie/{movie_id}")
+@router.get("/movie/{movie_id}")
 async def get_by_movie(
     movie_id: Annotated[str, Path()],
     date: Optional[datetime] = Query(default=None)

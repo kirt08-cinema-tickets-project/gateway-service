@@ -11,7 +11,7 @@ from src.apps.auth.utils import Roles
 from src.apps.grpc_clients import account_client
 
 async def authorized(credentials : Annotated[HTTPAuthorizationCredentials, Depends(bearer_shema)]) -> dict[str, str]:
-    user_token : str = credentials.credentials
+    user_token: str = credentials.credentials
     if len(user_token) == 0:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

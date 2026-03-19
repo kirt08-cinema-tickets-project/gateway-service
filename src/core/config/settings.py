@@ -13,6 +13,7 @@ from src.core.config.cookiesCongig import CookiesConfig
 from src.core.config.theaterConfig import TheaterConfig
 from src.core.config.passportConfig import PassportConfig
 from src.core.config.screeningConfig import ScreeningConfig
+from src.core.config.paymentConfig import PaymentConfig
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
@@ -40,5 +41,6 @@ class Settings(BaseSettings):
     movie: MovieConfig = MovieConfig()
     theater: TheaterConfig = TheaterConfig() 
     screening: ScreeningConfig = ScreeningConfig()
+    payment: PaymentConfig = PaymentConfig()
     
 settings = Settings()

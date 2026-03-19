@@ -14,3 +14,8 @@ class RU_BY_Phones_Numbers_Schema(PhoneNumber):
 
 class Phone_Validation_Schema(BaseModel):
     phone: RU_BY_Phones_Numbers_Schema = Field(examples=["+375447279809"])
+
+
+class SeatType(BaseModel):
+    seat_id: str
+    price: int

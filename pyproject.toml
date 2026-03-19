@@ -21,7 +21,7 @@ dependencies = [
     "opentelemetry-exporter-otlp (==1.40.0)",
     "opentelemetry-instrumentation-logging (>=0.61b0,<0.62)",
     "python-multipart (>=0.0.22,<0.0.23)",
-    "kirt08-contracts (==0.4.2)",
+    "kirt08-contracts (>=0.5.1,<0.6.0)",
 ]
 
 

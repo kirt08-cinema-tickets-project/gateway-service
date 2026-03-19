@@ -9,7 +9,7 @@ from src.apps.theaters import router as theaters_router
 from src.apps.halls import router as halls_router
 from src.apps.seats import router as seats_router
 from src.apps.screening import router as screening_router
-
+from src.apps.payment import router as payment_router
 
 router = APIRouter()
 
@@ -22,3 +22,4 @@ router.include_router(theaters_router)
 router.include_router(halls_router)
 router.include_router(seats_router)
 router.include_router(screening_router)
+router.include_router(payment_router)

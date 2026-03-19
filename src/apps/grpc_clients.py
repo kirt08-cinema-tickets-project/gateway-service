@@ -10,6 +10,7 @@ from src.core.grpc_clients import (
     HallClient,
     SeatsClient,
     ScreeningClient,
+    PaymentClient,
 )
 
 
@@ -37,3 +38,6 @@ seats_client = SeatsClient(theater_url)
 
 screening_url = settings.screening.host + ":" + settings.screening.port
 screening_client = ScreeningClient(screening_url)
+
+payment_url = settings.payment.host + ":" + settings.payment.port
+payment_client = PaymentClient(payment_url)
