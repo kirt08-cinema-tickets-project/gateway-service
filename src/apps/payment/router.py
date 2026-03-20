@@ -4,11 +4,11 @@ from fastapi import APIRouter, Depends, Query, Request
 
 from google.protobuf.json_format import MessageToDict
 
-from src.apps.grpc_clients import payment_client
+from src.apps.grpc_clients import payment_client, refund_client
 
 from src.apps.shared.service import authorized
 
-from src.apps.payment.shemas import InitPaymentRequest
+from src.apps.payment.schemas import InitPaymentRequest
 
 
 router = APIRouter()
@@ -31,6 +31,9 @@ async def init_payment(
 
 @router.post("/yookassa")
 async def yookassa_handler(request: Request):
+    """
+    It is webhook
+    """
     data = await request.json()
     print(data)
 
@@ -61,8 +64,12 @@ async def yookassa_handler(request: Request):
             brand = card.get("card_type")
         )
 
-    elif event.startswith("refaund."):
-        ...
+    elif event.startswith("refund."):
+        grpc_response = await refund_client.ProcessRefundEvent(
+            event = event,
+            provider_refund_id = data.get("object").get("id"),
+            status = data.get("object").get("status")
+        )
 
     return grpc_response.ok
 

@@ -11,6 +11,7 @@ from src.core.grpc_clients import (
     SeatsClient,
     ScreeningClient,
     PaymentClient,
+    RefundClient,
 )
 
 
@@ -41,3 +42,5 @@ screening_client = ScreeningClient(screening_url)
 
 payment_url = settings.payment.host + ":" + settings.payment.port
 payment_client = PaymentClient(payment_url)
+
+refund_client = RefundClient(payment_url)

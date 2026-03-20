@@ -10,6 +10,7 @@ __all__ = [
     "SeatsClient",
     "ScreeningClient",
     "PaymentClient",
+    "RefundClient",
 ]
 
 from src.core.grpc_clients.auth import AuthClient
@@ -23,3 +24,4 @@ from src.core.grpc_clients.halls import HallClient
 from src.core.grpc_clients.seats import SeatsClient
 from src.core.grpc_clients.screening import ScreeningClient
 from src.core.grpc_clients.payment import PaymentClient
+from src.core.grpc_clients.refund import RefundClient
